@@ -1,0 +1,51 @@
+<div class="min-h-screen bg-gray-50 p-8">
+  <div class="max-w-7xl mx-auto mb-8 flex flex-col md:flex-row justify-between items-center gap-4">
+    <div>
+      <h1 class="text-3xl font-extrabold text-gray-800 tracking-tight">Panel de Administración</h1>
+      <p class="text-gray-500 text-sm mt-1">Gestiona las ventas y productos de los clientes</p>
+    </div>
+    <div class="bg-blue-600 text-white px-5 py-2.5 rounded-xl shadow-lg font-semibold flex items-center gap-3">
+      Total Ventas: 
+      <span class="bg-white text-blue-600 px-3 py-1 rounded-full text-sm">{{ ventas.length }}</span>
+    </div>
+    <button (click)="cerrarSesion()" class="bg-gray-800 text-white px-4 py-2 rounded-lg">Cerrar Sesión</button>
+  </div>
+
+  <div class="max-w-7xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
+    <div class="overflow-x-auto">
+      <table *ngIf="ventas && ventas.length > 0" class="w-full text-left border-collapse min-w-[800px]">
+        <thead>
+          <tr class="bg-gray-800 text-white text-sm uppercase tracking-wider">
+            <th class="p-4 font-medium rounded-tl-lg">Titular</th>
+            <th class="p-4 font-medium">Total ($)</th>
+            <th class="p-4 font-medium">Fecha</th>
+            <th class="p-4 font-medium">Destinos</th>
+            <th class="p-4 font-medium text-center rounded-tr-lg">Acciones</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-200">
+          <tr *ngFor="let venta of ventas" class="hover:bg-blue-50 transition-colors duration-200">
+            <td class="p-4">
+              <input [(ngModel)]="venta.titular" class="border border-gray-300 rounded-lg px-3 py-2 w-full focus:ring-2 focus:ring-blue-500 outline-none text-gray-700">
+            </td>
+            <td class="p-4">
+              <input [(ngModel)]="venta.total" type="number" class="border border-gray-300 rounded-lg px-3 py-2 w-28 focus:ring-2 focus:ring-blue-500 outline-none text-gray-700">
+            </td>
+            <td class="p-4 text-sm text-gray-600 whitespace-nowrap font-medium">{{ venta.fecha }}</td>
+            <td class="p-4">
+              <input [(ngModel)]="venta.items" class="border border-gray-300 rounded-lg px-3 py-2 w-full focus:ring-2 focus:ring-blue-500 outline-none text-gray-700">
+            </td>
+            <td class="p-4 text-center space-x-2 whitespace-nowrap">
+              <button (click)="actualizar(venta)" class="bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-2 rounded-lg text-sm font-semibold transition">Actualizar</button>
+              <button (click)="eliminar(venta.id!)" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-semibold transition">Eliminar</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div *ngIf="ventas && ventas.length === 0" class="flex flex-col items-center justify-center p-12 text-gray-400">
+      <p class="text-lg font-medium text-gray-500">No hay ventas registradas actualmente.</p>
+    </div>
+  </div>
+</div>
