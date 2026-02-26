@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth-service/auth-service';
-import { ViajeService, Venta } from '../../services/viaje';
+import { ViajeService, Venta, Viaje } from '../../services/viaje';
 
 @Component({
   selector: 'app-admin',
@@ -20,39 +20,56 @@ export class Admin implements OnInit {
 
   usuario = this.authService.getUsuarioActual();
   ventas: Venta[] = [];
+  viajes: Viaje[] = [];
+
+  nuevoViaje: Viaje = { id: 0, destino: '', precio: 0, categoria: 'Playa', oferta: false, estrellas: 5, imagen: '' };
 
   ngOnInit(): void {
     this.cargarVentas();
+    this.cargarViajes();
   }
 
   cargarVentas() {
-    this.viajeService.obtenerVentas().subscribe({
-      next: (data) => {
-        if (data) {
-          this.ventas = Object.entries(data).map(([id, venta]: any) => ({ id, ...venta }));
-        } else {
-          this.ventas = [];
-        }
-        this.cdr.detectChanges();
-      },
-      error: (err) => console.error("Error al cargar ventas", err)
+    this.viajeService.obtenerVentas().subscribe(data => {
+      this.ventas = data || [];
+      this.cdr.detectChanges();
     });
   }
 
-  actualizar(venta: Venta) {
+  cargarViajes() {
+    this.viajeService.getViajes().subscribe(data => {
+      this.viajes = data || [];
+      this.cdr.detectChanges();
+    });
+  }
+
+  // Acciones de Ventas
+  actualizarVenta(venta: Venta) {
     if (!venta.id) return;
-    this.viajeService.actualizarVenta(venta.id, venta).subscribe(() => {
-      alert('Venta actualizada correctamente');
-      this.cargarVentas();
+    this.viajeService.actualizarVenta(venta.id, venta).subscribe(() => alert('Venta actualizada'));
+  }
+
+  eliminarVenta(id: string | undefined) {
+    if (!id || !confirm('¿Eliminar venta?')) return;
+    this.viajeService.eliminarVenta(id).subscribe(() => this.cargarVentas());
+  }
+
+  // Acciones de Catálogo (Viajes)
+  agregarViaje() {
+    const idNuevo = Math.floor(Math.random() * 10000);
+    this.viajeService.guardarViaje({ ...this.nuevoViaje, id: idNuevo }).subscribe(() => {
+      this.cargarViajes();
+      this.nuevoViaje = { id: 0, destino: '', precio: 0, categoria: 'Playa', oferta: false, estrellas: 5, imagen: '' };
     });
   }
 
-  eliminar(id: string | undefined) {
-    if (!id) return;
-    this.viajeService.eliminarVenta(id).subscribe(() => {
-      alert('Venta eliminada');
-      this.cargarVentas();
-    });
+  actualizarViaje(viaje: Viaje) {
+    this.viajeService.actualizarViaje(viaje.id, viaje).subscribe(() => alert('Catálogo actualizado'));
+  }
+
+  eliminarViaje(id: number) {
+    if (!confirm('¿Quitar del catálogo?')) return;
+    this.viajeService.eliminarViaje(id).subscribe(() => this.cargarViajes());
   }
 
   cerrarSesion() {

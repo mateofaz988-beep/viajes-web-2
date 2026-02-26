@@ -1,0 +1,112 @@
+{
+  "viajes": [
+    {
+      "id": 1,
+      "destino": "Islas Galápagos",
+      "precio": 1200,
+      "categoria": "Playa",
+      "oferta": true,
+      "estrellas": 5,
+      "imagen": "https://www.civitatis.com/blog/wp-content/uploads/2022/12/que-ver-islas-galapagos.jpg"
+    },
+    {
+      "id": 2,
+      "destino": "Volcán Cotopaxi",
+      "precio": 80,
+      "categoria": "Montaña",
+      "oferta": false,
+      "estrellas": 4,
+      "imagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Cotopaxi_volcano_2008-06-27T1322.jpg/500px-Cotopaxi_volcano_2008-06-27T1322.jpg"
+    },
+    {
+      "id": 3,
+      "destino": "Baños de Agua Santa",
+      "precio": 120,
+      "categoria": "Aventura",
+      "oferta": true,
+      "estrellas": 5,
+      "imagen": "https://www.turismo.gob.ec/wp-content/uploads/2020/12/Basilica-de-la-Virgen-de-Agua-Santa.jpg"
+    },
+    {
+      "id": 4,
+      "destino": "Quito Histórico",
+      "precio": 45,
+      "categoria": "Ciudad",
+      "oferta": false,
+      "estrellas": 5,
+      "imagen": "https://blog.remax.com.ec/wp-content/uploads/2023/10/Centro-Historico-Quito.jpg"
+    },
+    {
+      "id": 5,
+      "destino": "Laguna del Quilotoa",
+      "precio": 65,
+      "categoria": "Montaña",
+      "oferta": true,
+      "estrellas": 5,
+      "imagen": "https://www.amalavida.tv/wp-content/uploads/2018/06/quilotoa-ecuador.jpg"
+    },
+    {
+      "id": 6,
+      "destino": "Montañita",
+      "precio": 150,
+      "categoria": "Playa",
+      "oferta": false,
+      "estrellas": 4,
+      "imagen": "https://www.viajandox.com/uploads/Montanita-Santa-Elena_1.jpg"
+    },
+    {
+      "id": 7,
+      "destino": "Cuenca (Río Tomebamba)",
+      "precio": 90,
+      "categoria": "Ciudad",
+      "oferta": true,
+      "estrellas": 5,
+      "imagen": "https://GoRaymi.azureedge.net/repository/2019/08/08/96ec96996f5b906f97d5a5762885994f/cuenca_tomebamba.jpg"
+    },
+    {
+      "id": 8,
+      "destino": "Mindo (Bosque Nublado)",
+      "precio": 55,
+      "categoria": "Aventura",
+      "oferta": false,
+      "estrellas": 4,
+      "imagen": "https://mindoandescamping.com/wp-content/uploads/2021/05/mindo-ecuador.jpg"
+    },
+    {
+      "id": 9,
+      "destino": "Parque Nacional Yasuní",
+      "precio": 850,
+      "categoria": "Aventura",
+      "oferta": false,
+      "estrellas": 5,
+      "imagen": "https://pueblospatrimonio.ec/wp-content/uploads/2022/10/yasuni.jpg"
+    },
+    {
+      "id": 10,
+      "destino": "Salinas",
+      "precio": 200,
+      "categoria": "Playa",
+      "oferta": true,
+      "estrellas": 4,
+      "imagen": "https://www.goraymi.com/repository/2018/11/15/88258e807be589006575193498909890/salinas_playa.jpg"
+    },
+    {
+      "id": 9900,
+      "destino": "",
+      "precio": 0,
+      "categoria": "Playa",
+      "oferta": false,
+      "estrellas": 5,
+      "imagen": ""
+    }
+  ],
+  "ventas": [
+    {
+      "id": "d641",
+      "titular": "paulcito",
+      "total": 80,
+      "fecha": "26/2/2026, 9:45:21 a. m.",
+      "items": "Volcán Cotopaxi"
+    }
+  ]
+}
