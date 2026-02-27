@@ -2,111 +2,143 @@
   "viajes": [
     {
       "id": 1,
-      "destino": "Islas Galápagos",
-      "precio": 1200,
+      "destino": "Islas Galápagos, Ecuador",
+      "precio": 1202,
       "categoria": "Playa",
       "oferta": true,
       "estrellas": 5,
-      "imagen": "https://www.civitatis.com/blog/wp-content/uploads/2022/12/que-ver-islas-galapagos.jpg"
+      "imagen": "https://www.civitatis.com/blog/wp-content/uploads/2022/12/que-ver-islas-galapagos.jpg",
+      "descripcion": "Descubre la flora y fauna única en el mundo en este paraíso natural."
     },
     {
       "id": 2,
-      "destino": "Volcán Cotopaxi",
-      "precio": 80,
-      "categoria": "Montaña",
+      "destino": "París, Francia",
+      "precio": 1500,
+      "categoria": "Ciudad",
       "oferta": false,
-      "estrellas": 4,
-      "imagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Cotopaxi_volcano_2008-06-27T1322.jpg/500px-Cotopaxi_volcano_2008-06-27T1322.jpg"
+      "estrellas": 5,
+      "imagen": "https://i.pinimg.com/736x/3a/90/29/3a90292cf04e6d5ce19d4be37645c088.jpg",
+      "descripcion": "La ciudad del amor. Visita la Torre Eiffel y pasea por el río Sena."
     },
     {
       "id": 3,
-      "destino": "Baños de Agua Santa",
+      "destino": "Volcán Cotopaxi, Ecuador",
+      "precio": 86,
+      "categoria": "Montaña",
+      "oferta": false,
+      "estrellas": 4,
+      "imagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Cotopaxi_volcano_2008-06-27T1322.jpg/500px-Cotopaxi_volcano_2008-06-27T1322.jpg",
+      "descripcion": "Aventura de altura en uno de los volcanes activos más altos del mundo."
+    },
+    {
+      "id": 4,
+      "destino": "Tokio, Japón",
+      "precio": 2100,
+      "categoria": "Ciudad",
+      "oferta": true,
+      "estrellas": 5,
+      "imagen": "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=800",
+      "descripcion": "Una metrópolis vibrante donde la tradición milenaria se encuentra con la tecnología del futuro."
+    },
+    {
+      "id": 5,
+      "destino": "Baños de Agua Santa, Ecuador",
       "precio": 120,
       "categoria": "Aventura",
       "oferta": true,
       "estrellas": 5,
-      "imagen": "https://www.turismo.gob.ec/wp-content/uploads/2020/12/Basilica-de-la-Virgen-de-Agua-Santa.jpg"
+      "imagen": "https://www.turismo.gob.ec/wp-content/uploads/2020/12/Basilica-de-la-Virgen-de-Agua-Santa.jpg",
+      "descripcion": "Capital de la aventura. Cascadas, deportes extremos y aguas termales."
     },
     {
-      "id": 4,
-      "destino": "Quito Histórico",
+      "id": 6,
+      "destino": "Cancún, México",
+      "precio": 850,
+      "categoria": "Playa",
+      "oferta": true,
+      "estrellas": 4,
+      "imagen": "https://images.unsplash.com/photo-1552074284-5e88ef1aef18?w=800",
+      "descripcion": "Playas de arena blanca, mar turquesa y ruinas mayas espectaculares."
+    },
+    {
+      "id": 7,
+      "destino": "Quito Histórico, Ecuador",
       "precio": 45,
       "categoria": "Ciudad",
       "oferta": false,
       "estrellas": 5,
-      "imagen": "https://blog.remax.com.ec/wp-content/uploads/2023/10/Centro-Historico-Quito.jpg"
+      "imagen": "https://p0.piqsels.com/preview/835/817/126/ecuador-quito-historic-center-of-quito.jpg",
+      "descripcion": "Recorre el centro histórico mejor conservado de América Latina."
     },
     {
-      "id": 5,
-      "destino": "Laguna del Quilotoa",
-      "precio": 65,
+      "id": 8,
+      "destino": "Machu Picchu, Perú",
+      "precio": 650,
       "categoria": "Montaña",
-      "oferta": true,
+      "oferta": false,
       "estrellas": 5,
-      "imagen": "https://www.amalavida.tv/wp-content/uploads/2018/06/quilotoa-ecuador.jpg"
+      "imagen": "https://images.unsplash.com/photo-1587595431973-160d0d94add1?w=800",
+      "descripcion": "Explora la majestuosa ciudadela inca escondida en los Andes."
     },
     {
-      "id": 6,
-      "destino": "Montañita",
+      "id": 9,
+      "destino": "Montañita, Ecuador",
       "precio": 150,
       "categoria": "Playa",
       "oferta": false,
       "estrellas": 4,
-      "imagen": "https://www.viajandox.com/uploads/Montanita-Santa-Elena_1.jpg"
-    },
-    {
-      "id": 7,
-      "destino": "Cuenca (Río Tomebamba)",
-      "precio": 90,
-      "categoria": "Ciudad",
-      "oferta": true,
-      "estrellas": 5,
-      "imagen": "https://GoRaymi.azureedge.net/repository/2019/08/08/96ec96996f5b906f97d5a5762885994f/cuenca_tomebamba.jpg"
-    },
-    {
-      "id": 8,
-      "destino": "Mindo (Bosque Nublado)",
-      "precio": 55,
-      "categoria": "Aventura",
-      "oferta": false,
-      "estrellas": 4,
-      "imagen": "https://mindoandescamping.com/wp-content/uploads/2021/05/mindo-ecuador.jpg"
-    },
-    {
-      "id": 9,
-      "destino": "Parque Nacional Yasuní",
-      "precio": 850,
-      "categoria": "Aventura",
-      "oferta": false,
-      "estrellas": 5,
-      "imagen": "https://pueblospatrimonio.ec/wp-content/uploads/2022/10/yasuni.jpg"
+      "imagen": "https://www.tangol.com/Fotos/Destinos/motanita_201908191058500.JPG"
     },
     {
       "id": 10,
-      "destino": "Salinas",
-      "precio": 200,
-      "categoria": "Playa",
+      "destino": "Roma, Italia",
+      "precio": 1300,
+      "categoria": "Ciudad",
       "oferta": true,
-      "estrellas": 4,
-      "imagen": "https://www.goraymi.com/repository/2018/11/15/88258e807be589006575193498909890/salinas_playa.jpg"
+      "estrellas": 5,
+      "imagen": "https://images.unsplash.com/photo-1552832230-c0197dd311b5?w=800",
+      "descripcion": "Viaja en el tiempo visitando el Coliseo, el Foro Romano y el Vaticano."
     },
     {
-      "id": 9900,
-      "destino": "",
-      "precio": 0,
+      "id": 11,
+      "destino": "EEUU. San Francisco",
+      "precio": 1200,
       "categoria": "Playa",
-      "oferta": false,
+      "oferta": true,
       "estrellas": 5,
-      "imagen": ""
+      "imagen": "https://w0.peakpx.com/wallpaper/230/82/HD-wallpaper-brooklyn-bridge-new-york-nightscapes-skyscrapers-nyc-america-usa.jpg",
+      "descripcion": "xdxdxdxd"
+    },
+    {
+      "id": 12,
+      "destino": "rusia",
+      "precio": 900,
+      "categoria": "Playa",
+      "oferta": true,
+      "estrellas": 5,
+      "imagen": "https://i.pinimg.com/736x/c1/1e/18/c11e1883447275377082abdb10e3944e.jpg",
+      "descripcion": "rusia "
     }
   ],
   "ventas": [
     {
-      "id": "d641",
-      "titular": "paulcito",
-      "total": 80,
-      "fecha": "26/2/2026, 9:45:21 a. m.",
-      "items": "Volcán Cotopaxi"
+      "id": "0154",
+      "titular": "rocco",
+      "total": 2100,
+      "fecha": "26/2/2026, 19:40:17",
+      "items": "Tokio, Japón"
+    },
+    {
+      "id": "2146",
+      "titular": "ANAHI MORALES",
+      "subtotal": 150,
+      "iva": 22.5,
+      "total": 172.5,
+      "fecha": "26/2/2026, 10:39:12 p. m.",
+      "items": "Montañita, Ecuador",
+      "orderId": "AIR-3C5UMRV",
+      "status": "AUTHORIZED",
+      "lastFour": "5615"
     }
   ]
 }

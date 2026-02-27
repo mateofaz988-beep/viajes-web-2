@@ -10,6 +10,7 @@ export interface Viaje {
   oferta: boolean;
   estrellas: number;
   imagen: string;
+  descripcion?: string;
 }
 
 export interface Venta {
@@ -39,7 +40,6 @@ export class ViajeService {
   obtenerReservas(): Viaje[] { return this.reservas; }
   limpiarReservas(): void { this.reservas = []; }
 
-  // --- MÉTODOS PARA EL CATÁLOGO (VIAJES) ---
   getViajes(): Observable<Viaje[]> {
     return this.http.get<Viaje[]>(this.urlViajes);
   }
@@ -56,7 +56,6 @@ export class ViajeService {
     return this.http.delete<void>(`${this.urlViajes}/${id}`);
   }
 
-  // --- MÉTODOS PARA LAS VENTAS ---
   obtenerVentas(): Observable<Venta[]> {
     return this.http.get<Venta[]>(this.urlVentas);
   }

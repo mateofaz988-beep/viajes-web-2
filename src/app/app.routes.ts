@@ -12,12 +12,12 @@ import { FormularioCuenta } from './shared/formulario-cuenta/formulario-cuenta';
 import { clienteSoloLoginGuard } from './guards/cliente-solo-login-guard-guard';
 import { sesionActivaGuard } from './guards/sesion-activa-guard-guard';
 import { adminGuard } from './guards/admin-guard-guard';
+import { Error404Component } from './pages/error404/error404';
 
 export const routes: Routes = [
 
   { path: '', component: HomeComponent },
 
-  // 🔹 AHORA SÍ: El catálogo solo se ve si la sesión está activaxsxd
   { 
     path: 'catalogo', 
     component: CatalogoComponent, 
@@ -30,7 +30,6 @@ export const routes: Routes = [
     canActivate: [sesionActivaGuard],
   },
 
-  // 🔴 Zona Administrador protegida
   { 
     path: 'admin', 
     component: Admin, 
@@ -44,12 +43,12 @@ export const routes: Routes = [
   {
     path: 'login',
     component: Login,
-    // El guard de cliente solo login evita que alguien ya logueado vuelva a ver el login
     canActivate: [clienteSoloLoginGuard]
   },
 
   { path: 'formulariocuenta', component: FormularioCuenta },
 
-  { path: '**', redirectTo: '' }
+  // ✅ Cualquier ruta inventada (como /pagina-no-existe) abrirá tu componente 404
+  { path: '**', component: Error404Component }
 
 ];

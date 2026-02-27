@@ -1,3 +1,25 @@
-/* You can add global styles to this file, and also import other style files */
-
 @import "tailwindcss";
+
+/* 1. Fondo Global que responde al botón */
+html {
+  background-color: #ffffff; /* Modo claro */
+  color: #0f172a;
+  transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out;
+}
+
+html.dark {
+  background-color: #020617; /* Modo oscuro Titanium */
+  color: #f8fafc;
+}
+
+/* 2. Asegurar que el body sea transparente para ver el fondo del html */
+body {
+  background-color: transparent;
+  margin: 0;
+  min-height: 100vh;
+}
+
+/* 3. Forzar que los componentes ocupen el fondo correcto */
+.dark body, .dark app-root {
+  background-color: #020617;
+}

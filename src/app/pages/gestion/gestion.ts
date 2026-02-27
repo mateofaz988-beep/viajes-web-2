@@ -1,7 +1,13 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ReactiveFormsModule, FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { ViajeService, Viaje } from '../../services/viaje';
+import { finalize, delay } from 'rxjs/operators';
+
+/**
+ * Estados posibles de la transacción para controlar la UI
+ */
+type TransactionStatus = 'IDLE' | 'VERIFYING' | 'AUTHORIZED' | 'FAILED';
 
 @Component({
   selector: 'app-gestion',
@@ -10,97 +16,171 @@ import { ViajeService, Viaje } from '../../services/viaje';
   templateUrl: './gestion.html'
 })
 export class GestionComponent implements OnInit {
+  // --- Inyecciones de Dependencia ---
+  private readonly _viajeService = inject(ViajeService);
+  private readonly fb = inject(FormBuilder);
 
-  private _viajeService = inject(ViajeService);
-  private fb = inject(FormBuilder);
+  // --- Signals de Estado ---
+  itinerario = signal<Viaje[]>([]);
+  status = signal<TransactionStatus>('IDLE');
+  verPago = signal<boolean>(false);
+  
+  // Nuevo: Detección de marca de tarjeta
+  tarjetaMarca = signal<'visa' | 'mastercard' | 'amex' | 'unknown'>('unknown');
 
-  carrito: Viaje[] = [];
-  total: number = 0;
-  verPago: boolean = false;
+  // --- Cálculos Financieros Reactivos ---
+  subtotal = computed(() => this.itinerario().reduce((acc, v) => acc + v.precio, 0));
+  iva = computed(() => this.subtotal() * 0.15); // IVA 15% (Ecuador 2026)
+  total = computed(() => this.subtotal() + this.iva());
+
+  // --- Formulario de Liquidación ---
   formPago: FormGroup;
 
   constructor() {
     this.formPago = this.fb.group({
-      titular: ['', [Validators.required, Validators.minLength(3)]],
-      tarjeta: ['', [Validators.required, Validators.pattern(/^[0-9]{16}$/)]],
-      fecha: ['', [Validators.required, Validators.pattern(/^(0[1-9]|1[0-2])\/\d{2}$/)]],
-      cvv: ['', [Validators.required, Validators.pattern(/^[0-9]{3}$/)]]
+      titular: ['', [Validators.required, Validators.minLength(3), Validators.pattern(/^[a-zA-Z ]*$/)]],
+      // Ajustamos el patrón para permitir espacios cada 4 dígitos (19 caracteres en total)
+      tarjeta: ['', [Validators.required, Validators.pattern(/^\d{4} \d{4} \d{4} \d{4}$/)]],
+      // Validador personalizado para fecha no caducada
+      fecha: ['', [Validators.required, this.validarFechaExpiracion()]],
+      cvv: ['', [Validators.required, Validators.pattern(/^\d{3,4}$/)]]
     });
   }
 
   ngOnInit(): void {
-    const reservasDelServicio = this._viajeService.obtenerReservas();
-    this.carrito = [...this.carrito, ...reservasDelServicio];
-    this.calcularTotal();
+    this.cargarReservas();
   }
 
-  validarSoloNumeros(event: any): void {
-    const input = event.target;
-    input.value = input.value.replace(/[^0-9]/g, '');
-    const controlName = input.getAttribute('formControlName');
-    this.formPago.get(controlName)?.setValue(input.value);
+  private cargarReservas(): void {
+    const reservas = this._viajeService.obtenerReservas();
+    this.itinerario.set(reservas);
   }
 
-  formatearFecha(event: any): void {
-    const input = event.target;
-    let valor = input.value.replace(/\D/g, '');
-    if (valor.length > 2) {
-      valor = valor.substring(0, 2) + '/' + valor.substring(2, 4);
-    }
-    input.value = valor;
-    this.formPago.get('fecha')?.setValue(valor);
+  // --- Lógica de Formateo y Validación de Inputs ---
+
+  /**
+   * Formatea el número de tarjeta: 0000 0000 0000 0000 y detecta la marca
+   */
+  formatearTarjeta(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    let valor = input.value.replace(/\D/g, ''); // Solo números
+    
+    // Detección de marca (BIN)
+    if (valor.startsWith('4')) this.tarjetaMarca.set('visa');
+    else if (/^5[1-5]/.test(valor)) this.tarjetaMarca.set('mastercard');
+    else if (/^3[47]/.test(valor)) this.tarjetaMarca.set('amex');
+    else this.tarjetaMarca.set('unknown');
+
+    // Insertar espacios cada 4 dígitos
+    let valorFormateado = valor.match(/.{1,4}/g)?.join(' ') || valor;
+    input.value = valorFormateado.substring(0, 19); // Limite de 16 dígitos + 3 espacios
+    
+    this.formPago.get('tarjeta')?.setValue(input.value, { emitEvent: false });
   }
 
-  calcularTotal(): void {
-    this.total = this.carrito.reduce((suma, viaje) => suma + viaje.precio, 0);
-  }
+  /**
+   * Validador para asegurar que la tarjeta no esté vencida
+   */
+  private validarFechaExpiracion(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const valor = control.value;
+      if (!valor || !/^\d{2}\/\d{2}$/.test(valor)) return { format: true };
 
-  eliminar(index: number): void {
-    this.carrito = this.carrito.filter((_, i) => i !== index);
-    this.calcularTotal();
-  }
+      const [mes, anioStr] = valor.split('/').map(Number);
+      const hoy = new Date();
+      const mesActual = hoy.getMonth() + 1;
+      const anioActual = parseInt(hoy.getFullYear().toString().substring(2));
 
-  abrirCaja(): void {
-    if (this.total > 0) {
-      this.verPago = true;
-      this.formPago.reset();
-    }
-  }
-
-  cerrarCaja(): void {
-    this.verPago = false;
-  }
-
-  // MÉTODO ACTUALIZADO PARA MOCKAPI
-  pagarTodo(): void {
-    if (this.formPago.valid) {
+      if (mes < 1 || mes > 12) return { mesInvalido: true };
       
-      // 1. Preparamos el objeto con los datos de la venta
-      const datosVenta = {
-        titular: this.formPago.value.titular,
-        total: this.total,
-        fecha: new Date().toLocaleString(), // Fecha y hora actual
-        items: this.carrito.map(v => v.destino).join(', ') // Nombres de los destinos
-      };
+      // Compara año y mes
+      if (anioStr < anioActual || (anioStr === anioActual && mes < mesActual)) {
+        return { caducada: true };
+      }
 
-      // 2. Llamamos al servicio para guardar en MockAPI
-      this._viajeService.guardarVenta(datosVenta).subscribe({
-        next: (respuesta) => {
-          // Si la API responde con éxito
-          console.log('Venta guardada:', respuesta);
-          alert('¡Pago exitoso! La reserva se ha guardado en la nube.');
-          
-          // Limpiamos la interfaz
-          this.carrito = []; 
-          this.total = 0;    
-          this.cerrarCaja();
+      return null;
+    };
+  }
+
+  validarSoloNumeros(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    input.value = input.value.replace(/\D/g, '');
+  }
+
+  formatearFecha(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    let value = input.value.replace(/\D/g, '');
+    
+    if (value.length >= 2) {
+      value = `${value.substring(0, 2)}/${value.substring(2, 4)}`;
+    }
+    
+    input.value = value;
+    this.formPago.get('fecha')?.setValue(value, { emitEvent: false });
+  }
+
+  // --- Acciones del Panel de Gestión ---
+
+  eliminarItem(index: number): void {
+    this.itinerario.update(items => items.filter((_, i) => i !== index));
+  }
+
+  toggleModalPago(estado: boolean): void {
+    if (estado && this.total() === 0) return;
+    this.verPago.set(estado);
+    
+    if (!estado) {
+      this.formPago.reset();
+      this.status.set('IDLE');
+      this.tarjetaMarca.set('unknown');
+    }
+  }
+
+  // --- Lógica de Transacción Final ---
+
+  confirmarTransaccion(): void {
+    if (this.formPago.invalid || this.status() !== 'IDLE') return;
+
+    this.status.set('VERIFYING');
+
+    const orderRef = `AIR-${Math.random().toString(36).substring(2, 9).toUpperCase()}`;
+
+    const payload = {
+      titular: this.formPago.value.titular.toUpperCase(),
+      subtotal: this.subtotal(),
+      iva: this.iva(),
+      total: this.total(),
+      fecha: new Date().toLocaleString('es-EC'),
+      items: this.itinerario().map(v => v.destino).join(' | '),
+      orderId: orderRef,
+      status: 'AUTHORIZED',
+      // Solo enviamos los últimos 4 dígitos por seguridad
+      lastFour: this.formPago.value.tarjeta.replace(/\s/g, '').slice(-4)
+    };
+
+    this._viajeService.guardarVenta(payload)
+      .pipe(
+        delay(2000), 
+        finalize(() => {
+          if (this.status() === 'VERIFYING') this.status.set('IDLE');
+        })
+      )
+      .subscribe({
+        next: (res) => {
+          this.status.set('AUTHORIZED');
+          setTimeout(() => this.finalizarProcesoExitoso(), 1500);
         },
         error: (err) => {
-          // Si hay un error (ej. URL mal puesta o sin internet)
-          console.error('Error al guardar:', err);
-          alert('Hubo un problema al registrar la venta en el servidor.');
+          this.status.set('FAILED');
+          alert('Error en la red bancaria. Transacción declinada.');
         }
       });
-    }
+  }
+
+  private finalizarProcesoExitoso(): void {
+    alert('Pago Procesado. Su código de abordaje ha sido generado.');
+    this.itinerario.set([]);
+    this._viajeService.limpiarReservas(); 
+    this.toggleModalPago(false);
   }
 }

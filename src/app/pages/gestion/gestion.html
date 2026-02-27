@@ -1,120 +1,138 @@
-<div class="p-8 max-w-5xl mx-auto font-sans">
-  <h1 class="text-3xl font-extrabold text-gray-900 mb-8 text-center">Gestión de Reservas</h1>
+<div class="p-8 md:p-16 max-w-7xl mx-auto font-sans bg-[#121418] min-h-screen text-slate-300 transition-all duration-700">
+  
+  <div class="mb-20 text-center lg:text-left">
+    <span class="text-[10px] font-bold tracking-[0.6em] text-[#C5A059] uppercase mb-4 block">
+      Gestión de Activos y Reservas ✦
+    </span>
+    <h1 class="text-3xl md:text-6xl font-extralight text-white uppercase tracking-tighter">
+      Su <span class="italic font-serif text-[#C5A059] lowercase">compra </span>
+    </h1>
+    <div class="w-12 h-[1px] bg-[#C5A059]/30 mt-8 mx-auto lg:mx-0"></div>
+  </div>
 
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-16">
     
-    <div class="md:col-span-2 space-y-4">
-      <h2 class="text-xl font-bold text-blue-700 mb-4 italic">Mis Viajes Seleccionados</h2>
-      
-      <div *ngFor="let item of carrito; let i = index" class="p-5 bg-white border border-gray-200 rounded-2xl shadow-sm flex justify-between items-center transition-all hover:shadow-md">
-        <div class="flex items-center gap-4">
-          <img [src]="item.imagen" alt="destino" class="w-20 h-20 rounded-xl object-cover hidden sm:block shadow-sm">
-          <div>
-            <p class="text-lg font-bold text-gray-800">{{ item.destino }}</p>
-            <p class="text-sm text-gray-400">{{ item.categoria }}</p>
-            <p class="text-xs text-yellow-500 mt-1">{{ '⭐'.repeat(item.estrellas) }}</p>
+    <div class="lg:col-span-2 space-y-8">
+      <div *ngFor="let item of itinerario(); let i = index" 
+           class="group p-8 bg-[#1a1d23] border border-slate-800/40 rounded-sm shadow-2xl flex flex-col sm:flex-row justify-between items-center transition-all duration-700 hover:border-[#C5A059]/30">
+        
+        <div class="flex items-center gap-8 w-full">
+          <div class="relative w-28 h-28 overflow-hidden border border-slate-800">
+            <img [src]="item.imagen" class="w-full h-full object-cover grayscale-[60%] group-hover:grayscale-0 transition-all duration-[1.5s] group-hover:scale-110">
+          </div>
+          <div class="flex-1">
+            <p class="text-2xl font-serif text-white mb-1 group-hover:text-[#C5A059] transition-colors uppercase tracking-wide">{{ item.destino }}</p>
+            <p class="text-[9px] text-[#C5A059] uppercase tracking-[0.3em] font-bold italic">{{ item.categoria }}</p>
           </div>
         </div>
         
-        <div class="text-right">
-          <p class="text-xl font-black text-gray-900 mb-2">${{ item.precio }}</p>
-          <button (click)="eliminar(i)" class="text-red-500 hover:text-red-700 text-sm font-bold underline transition-colors">
-            Eliminar
+        <div class="text-right mt-8 sm:mt-0 w-full sm:w-auto">
+          <p class="text-3xl font-extralight text-white tracking-tighter mb-3">${{ item.precio | number:'1.0-0' }}</p>
+          <button (click)="eliminarItem(i)" class="text-[9px] font-bold text-slate-600 hover:text-red-900 uppercase tracking-[0.3em] border-b border-transparent hover:border-red-900 pb-1 transition-all">
+            Remover Itinerario
           </button>
         </div>
       </div>
 
-      <div *ngIf="carrito.length === 0" class="text-center p-10 bg-gray-50 rounded-2xl border-2 border-dashed border-gray-300">
-        <p class="text-gray-500 text-lg font-medium">No tienes reservas pendientes.</p>
-        <p class="text-sm text-blue-500 mt-2">Ve al catálogo para añadir destinos.</p>
+      <div *ngIf="itinerario().length === 0" class="text-center py-32 border border-dashed border-slate-800 rounded-sm opacity-50">
+        <p class="text-[10px] uppercase tracking-[0.5em] italic">No se han detectado reservas en su terminal</p>
       </div>
     </div>
 
-    <div class="bg-gray-900 text-white p-8 rounded-3xl shadow-2xl h-fit sticky top-5">
-      <h2 class="text-2xl font-bold mb-6 border-b border-gray-700 pb-2">Resumen 🛒</h2>
+    <div class="bg-[#1a1d23] p-10 lg:p-12 rounded-sm shadow-2xl border border-slate-800/60 h-fit lg:sticky lg:top-32">
+      <h2 class="text-[11px] font-bold text-[#C5A059] uppercase tracking-[0.5em] mb-12 border-b border-slate-800 pb-6 italic">Liquidación de Fondos</h2>
       
-      <ul class="space-y-3 mb-6 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
-        <li *ngFor="let item of carrito" class="flex justify-between text-gray-300 text-sm">
-          <span>{{ item.destino }}</span>
-          <span class="font-bold text-white">${{ item.precio }}</span>
-        </li>
-      </ul>
-
-      <div class="border-t border-gray-700 pt-6">
-        <div class="flex justify-between items-center mb-8">
-          <span class="text-xl">Total:</span>
-          <span class="text-4xl font-black text-green-400">${{ total }}</span>
+      <div class="space-y-6 mb-12 text-[11px] uppercase tracking-widest font-light">
+        <div class="flex justify-between text-slate-400"><span>Subtotal</span><span>${{ subtotal() | number:'1.0-2' }}</span></div>
+        <div class="flex justify-between text-slate-500"><span>Impuestos (IVA 15%)</span><span>${{ iva() | number:'1.0-2' }}</span></div>
+        <div class="flex justify-between items-end border-t border-slate-800 pt-10 text-white">
+          <span class="text-[10px] font-bold text-slate-500 tracking-[0.4em]">Total Inversión</span>
+          <span class="text-4xl font-extralight text-[#C5A059] tracking-tighter">${{ total() | number:'1.0-0' }}</span>
         </div>
-        
-        <button (click)="abrirCaja()" [disabled]="total === 0" class="w-full bg-green-500 hover:bg-green-600 disabled:bg-gray-700 disabled:cursor-not-allowed text-white font-black py-4 rounded-2xl text-xl shadow-lg transition-all transform active:scale-95">
-          PAGAR AHORA 💳
-        </button>
+      </div>
+
+      <button (click)="toggleModalPago(true)" [disabled]="total() === 0" 
+              class="w-full bg-[#C5A059] text-black font-bold py-6 text-[11px] uppercase tracking-[0.5em] hover:bg-[#d4b57a] transition-all disabled:opacity-20 shadow-2xl">
+        Confirmar Transacción ✦
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="verPago()" class="fixed inset-0 z-[100] flex items-center justify-center bg-[#030712]/98 backdrop-blur-xl p-6 animate-fade-in">
+    <div class="bg-[#1a1d23] w-full max-w-xl p-12 lg:p-16 border border-slate-800 relative shadow-[0_50px_100px_rgba(0,0,0,0.8)]">
+      
+      <button (click)="toggleModalPago(false)" [disabled]="status() === 'VERIFYING'" 
+              class="absolute top-8 right-10 text-slate-500 text-[9px] font-bold tracking-widest uppercase hover:text-[#C5A059] transition-colors">
+        Cerrar [x]
+      </button>
+      
+      <div class="text-center mb-16">
+        <span class="text-[9px] font-bold text-[#C5A059] uppercase tracking-[0.6em] mb-4 block">Seguridad Encriptada SSL</span>
+        <h2 class="text-3xl font-extralight text-white uppercase tracking-tighter">Autorización de <span class="font-serif italic text-[#C5A059] lowercase">fondos</span></h2>
+      </div>
+<form [formGroup]="formPago" (ngSubmit)="confirmarTransaccion()" class="space-y-8">
+  <div class="space-y-2">
+    <label class="text-[8px] font-bold text-slate-600 uppercase tracking-[0.4em] ml-1">Titular de la Cuenta</label>
+    <input type="text" formControlName="titular" 
+           class="w-full bg-transparent border-b border-slate-800 py-2.5 text-white focus:outline-none focus:border-[#C5A059]/50 text-[10px] tracking-[0.3em] uppercase transition-all">
+  </div>
+
+  <div class="space-y-2">
+    <label class="text-[8px] font-bold text-slate-600 uppercase tracking-[0.4em] ml-1">Identificación de Tarjeta</label>
+    <div class="relative">
+      <input type="text" formControlName="tarjeta" (input)="formatearTarjeta($event)" placeholder="0000 0000 0000 0000" maxlength="19"
+             class="w-full bg-transparent border-b border-slate-800 py-2.5 text-white focus:outline-none focus:border-[#C5A059]/50 font-mono text-sm tracking-[0.4em] transition-all"
+             [class.border-red-900]="formPago.get('tarjeta')?.invalid && formPago.get('tarjeta')?.touched">
+      
+      <div class="absolute right-0 top-1/2 -translate-y-1/2 flex items-center gap-2">
+        <span *ngIf="tarjetaMarca() === 'visa'" class="text-[#C5A059] font-black text-[9px] border border-[#C5A059]/40 px-1.5 py-0.5 rounded-sm animate-pulse">VISA</span>
+        <span *ngIf="tarjetaMarca() === 'mastercard'" class="text-white font-black text-[9px] border border-white/20 px-1.5 py-0.5 rounded-sm animate-pulse">MC</span>
+        <span *ngIf="tarjetaMarca() === 'amex'" class="text-cyan-400 font-black text-[9px] border border-cyan-400/20 px-1.5 py-0.5 rounded-sm animate-pulse">AMEX</span>
       </div>
     </div>
   </div>
 
-  <div *ngIf="verPago" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70 backdrop-blur-sm p-4 transition-opacity duration-300">
-    <div class="bg-white w-full max-w-md rounded-3xl p-8 shadow-2xl relative animate-fade-in-down">
+  <div class="grid grid-cols-2 gap-8">
+    <div class="space-y-2">
+      <label class="text-[8px] font-bold text-slate-600 uppercase tracking-[0.4em] ml-1">Expiración (MM/YY)</label>
+      <input type="text" formControlName="fecha" (input)="formatearFecha($event)" placeholder="MM/YY" maxlength="5"
+             class="w-full bg-transparent border-b border-slate-800 py-2.5 text-white text-center font-mono text-xs tracking-[0.4em] focus:border-[#C5A059]/50 outline-none transition-all"
+             [class.border-red-900]="formPago.get('fecha')?.invalid && formPago.get('fecha')?.touched">
       
-      <button (click)="cerrarCaja()" class="absolute top-4 right-6 text-3xl text-gray-400 hover:text-gray-800 font-bold transition-colors">&times;</button>
-      
-      <h2 class="text-2xl font-black text-gray-800 mb-6 text-center">Pago Seguro</h2>
-      
-      <form [formGroup]="formPago" (ngSubmit)="pagarTodo()" class="space-y-5">
-        
-        <div>
-          <label class="block text-xs font-bold text-gray-500 ml-3 mb-1 uppercase tracking-wider">Titular de la tarjeta</label>
-          <input type="text" formControlName="titular" placeholder="NOMBRE COMO APARECE EN TARJETA" 
-                 class="w-full p-4 border rounded-2xl bg-gray-50 outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all uppercase placeholder-gray-400"
-                 [class.border-red-500]="formPago.get('titular')?.invalid && formPago.get('titular')?.touched">
-        </div>
+      <div *ngIf="formPago.get('fecha')?.touched && formPago.get('fecha')?.errors" class="text-[7px] font-bold uppercase text-red-900 mt-1 tracking-widest">
+        <span *ngIf="formPago.get('fecha')?.hasError('caducada')">Tarjeta Caducada</span>
+        <span *ngIf="formPago.get('fecha')?.hasError('format')">Error Formato</span>
+      </div>
+    </div>
 
-        <div>
-          <label class="block text-xs font-bold text-gray-500 ml-3 mb-1 uppercase tracking-wider">Número de Tarjeta</label>
-          <div class="relative">
-            <input type="text" formControlName="tarjeta" placeholder="0000 0000 0000 0000" maxlength="16"
-                   (input)="validarSoloNumeros($event)"
-                   class="w-full p-4 border rounded-2xl bg-gray-50 outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all font-mono text-lg tracking-widest"
-                   [class.border-red-500]="formPago.get('tarjeta')?.invalid && formPago.get('tarjeta')?.touched">
-            <div class="absolute right-4 top-4 text-gray-400">💳</div>
-          </div>
-          <p *ngIf="formPago.get('tarjeta')?.hasError('pattern') && formPago.get('tarjeta')?.touched" class="text-red-500 text-xs ml-3 mt-1 font-bold">
-            ⚠️ Deben ser 16 dígitos exactos
-          </p>
-        </div>
+    <div class="space-y-2">
+      <label class="text-[8px] font-bold text-slate-600 uppercase tracking-[0.4em] ml-1">Código CVV</label>
+      <input type="password" formControlName="cvv" (input)="validarSoloNumeros($event)" maxlength="3" placeholder="***"
+             class="w-full bg-transparent border-b border-slate-800 py-2.5 text-white text-center font-mono text-xs tracking-[0.4em] focus:border-[#C5A059]/50 outline-none transition-all">
+    </div>
+  </div>
 
-        <div class="grid grid-cols-2 gap-4">
-          <div>
-            <label class="block text-xs font-bold text-gray-500 ml-3 mb-1 uppercase tracking-wider">Expiración</label>
-            <input type="text" formControlName="fecha" placeholder="MM/YY" maxlength="5"
-                   (input)="formatearFecha($event)"
-                   class="w-full p-4 border rounded-2xl bg-gray-50 outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all text-center font-mono"
-                   [class.border-red-500]="formPago.get('fecha')?.invalid && formPago.get('fecha')?.touched">
-          </div>
+  <div class="bg-black/20 p-4 border border-slate-800 flex justify-between items-center px-6 my-6">
+    <span class="text-[9px] text-slate-500 uppercase tracking-[0.4em] font-bold">Total a Transferir</span>
+    <span class="text-2xl font-extralight text-white tracking-tighter">${{ total() | number:'1.0-0' }}</span>
+  </div>
 
-          <div>
-            <label class="block text-xs font-bold text-gray-500 ml-3 mb-1 uppercase tracking-wider">CVV</label>
-            <input type="password" formControlName="cvv" placeholder="123" maxlength="3"
-                   (input)="validarSoloNumeros($event)"
-                   class="w-full p-4 border rounded-2xl bg-gray-50 outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all text-center font-mono tracking-widest"
-                   [class.border-red-500]="formPago.get('cvv')?.invalid && formPago.get('cvv')?.touched">
-          </div>
-        </div>
+  <button type="submit" [disabled]="formPago.invalid || status() === 'VERIFYING'" 
+          class="w-full py-4 bg-[#C5A059] text-black font-black text-[10px] uppercase tracking-[0.5em] shadow-xl transition-all duration-700 hover:bg-[#d4b57a] disabled:opacity-20 flex justify-center items-center gap-3">
+    
+    <span *ngIf="status() === 'IDLE'">Ejecutar Liquidación ✦</span>
+    
+    <ng-container *ngIf="status() === 'VERIFYING'">
+      <svg class="animate-spin h-3 w-3 text-black" viewBox="0 0 24 24">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+      </svg>
+      <span>Validando...</span>
+    </ng-container>
 
-        <div class="bg-blue-50 p-4 rounded-2xl text-center my-6 border border-blue-100 flex justify-between items-center px-6">
-          <span class="text-blue-800 font-bold text-lg italic">Total a pagar:</span>
-          <span class="text-3xl font-black text-blue-900">${{ total }}</span>
-        </div>
-
-        <button type="submit" 
-                [disabled]="formPago.invalid"
-                class="w-full py-4 rounded-2xl text-xl font-black shadow-xl transition-all duration-300
-                       text-white bg-blue-800 hover:bg-blue-900 active:scale-95 hover:shadow-2xl
-                       disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed disabled:shadow-none disabled:transform-none">
-          <span *ngIf="formPago.valid">CONFIRMAR PAGO ✅</span>
-          <span *ngIf="formPago.invalid">COMPLETA LOS DATOS 🔒</span>
-        </button>
-      </form>
+    <span *ngIf="status() === 'AUTHORIZED'">Autorizada ✓</span>
+  </button>
+</form>
     </div>
   </div>
 </div>

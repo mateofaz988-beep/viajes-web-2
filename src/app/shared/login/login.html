@@ -1,124 +1,121 @@
-<div class="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-  <div class="sm:mx-auto sm:w-full sm:max-w-md">
-    <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
-      Iniciar Sesión
-    </h2>
-    <p class="mt-2 text-center text-sm text-gray-600">
-      O
-      <a routerLink="/registro" class="font-medium text-blue-600 hover:text-blue-500 transition-colors">
-        regístrate si aún no tienes cuenta
-      </a>
-    </p>
+<br>
+<br>
+<br>
+<div class="min-h-screen bg-[#121418] flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8 font-sans relative overflow-hidden">
+  
+  <div class="fixed top-0 left-0 right-0 h-[2px] bg-[#C5A059]/30 z-50"></div>
+
+  <div class="absolute top-0 left-1/4 w-96 h-96 bg-[#C5A059]/5 blur-[120px] rounded-full"></div>
+  <div class="absolute bottom-0 right-1/4 w-96 h-96 bg-slate-500/5 blur-[120px] rounded-full"></div>
+
+  <div class="sm:mx-auto sm:w-full sm:max-w-md relative z-10">
+    <div class="flex flex-col items-center mb-10 group">
+      <div class="w-16 h-16 border border-[#C5A059]/30 rounded-full flex items-center justify-center mb-6 group-hover:border-[#C5A059] transition-all duration-700">
+        <svg class="w-7 h-7 text-[#C5A059]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+        </svg>
+      </div>
+      <h2 class="text-center text-3xl font-extralight text-white uppercase tracking-tighter">
+        Acceso <span class="font-serif italic text-[#C5A059] lowercase ml-1">exclusivo</span>
+      </h2>
+      <p class="mt-4 text-center text-[10px] text-slate-500 font-bold uppercase tracking-[0.4em]">
+        O 
+        <a routerLink="/registro" class="text-white hover:text-[#C5A059] transition-colors border-b border-slate-800 hover:border-[#C5A059] pb-1 ml-2">
+          solicitar membresía
+        </a>
+      </p>
+    </div>
   </div>
 
-  <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-    <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+  <div class="mt-4 sm:mx-auto sm:w-full sm:max-w-md relative z-10">
+    <div class="bg-[#1a1d23] py-10 px-8 shadow-[0_30px_60px_rgba(0,0,0,0.5)] border border-slate-800/60 rounded-sm sm:px-12">
       
-      <div *ngIf="errorMessage" class="mb-4 bg-red-50 border-l-4 border-red-500 p-4 rounded-md">
-        <div class="flex">
-          <div class="flex-shrink-0">
-            <svg class="h-5 w-5 text-red-400" fill="currentColor" viewBox="0 0 20 20">
-              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
-            </svg>
-          </div>
-          <div class="ml-3 text-sm text-red-700">
-            <p>{{ errorMessage }}</p>
-          </div>
-        </div>
+      <div *ngIf="errorMessage" class="mb-8 bg-red-950/20 border-l-2 border-red-500 p-4 flex items-center gap-3">
+        <svg class="h-4 w-4 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 000 16z" /></svg>
+        <p class="text-[10px] text-red-400 font-bold uppercase tracking-widest">{{ errorMessage }}</p>
       </div>
 
-      <form class="space-y-6" (ngSubmit)="iniciarsecion()">
+      <form class="space-y-8" (ngSubmit)="iniciarsecion()">
         
         <div>
-          <label for="email" class="block text-sm font-medium text-gray-700">
-            Correo Electrónico
+          <label for="email" class="block text-[9px] font-bold text-slate-500 uppercase tracking-[0.3em] mb-3 ml-1">
+            Identificación de Usuario
           </label>
-          <div class="mt-1 relative">
+          <div class="relative group">
             <input 
               id="email" 
               name="email" 
               type="email" 
-              autocomplete="email" 
               required
               [(ngModel)]="email"
-              [ngClass]="{'border-red-300 focus:ring-red-500 focus:border-red-500': !isEmailValid, 'border-gray-300 focus:ring-blue-500 focus:border-blue-500': isEmailValid}"
-              class="appearance-none block w-full px-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none sm:text-sm transition-colors"
-              placeholder="admin@ejemplo.com"
+              class="appearance-none block w-full px-4 py-4 bg-[#21252b]/50 border border-slate-700/50 rounded-sm text-white placeholder-slate-600 focus:outline-none focus:border-[#C5A059]/40 focus:ring-1 focus:ring-[#C5A059]/10 transition-all text-sm tracking-wide"
+              placeholder="CORREO@EJEMPLO.COM"
             >
           </div>
-          <p *ngIf="!isEmailValid" class="mt-2 text-sm text-red-600">Formato de correo inválido.</p>
         </div>
 
         <div>
-          <label for="password" class="block text-sm font-medium text-gray-700">
-            Contraseña
+          <label for="password" class="block text-[9px] font-bold text-slate-500 uppercase tracking-[0.3em] mb-3 ml-1">
+            Clave de Acceso
           </label>
-          <div class="mt-1 relative">
+          <div class="relative">
             <input 
               id="password" 
               name="password" 
               [type]="showPassword ? 'text' : 'password'" 
-              autocomplete="current-password" 
               required
               [(ngModel)]="password"
-              [ngClass]="{'border-red-300 focus:ring-red-500 focus:border-red-500': !isPasswordValid, 'border-gray-300 focus:ring-blue-500 focus:border-blue-500': isPasswordValid}"
-              class="appearance-none block w-full px-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none sm:text-sm transition-colors"
+              class="appearance-none block w-full px-4 py-4 bg-[#21252b]/50 border border-slate-700/50 rounded-sm text-white placeholder-slate-600 focus:outline-none focus:border-[#C5A059]/40 focus:ring-1 focus:ring-[#C5A059]/10 transition-all text-sm tracking-wide"
               placeholder="••••••••"
             >
             <button 
               type="button" 
               (click)="togglePassword()"
-              class="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5 focus:outline-none">
-              <svg *ngIf="!showPassword" class="h-5 w-5 text-gray-400 hover:text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-              </svg>
-              <svg *ngIf="showPassword" class="h-5 w-5 text-gray-400 hover:text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
-              </svg>
+              class="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-600 hover:text-[#C5A059] transition-colors">
+              <span class="text-[9px] font-black uppercase tracking-widest">{{ showPassword ? 'Ocultar' : 'Ver' }}</span>
             </button>
           </div>
-          <p *ngIf="!isPasswordValid" class="mt-2 text-sm text-red-600">Mínimo 6 caracteres.</p>
         </div>
 
-        <div class="flex items-center justify-between">
+        <div class="flex items-center justify-between pt-2">
           <div class="flex items-center">
             <input 
               id="remember_me" 
               name="rememberMe" 
               type="checkbox" 
               [(ngModel)]="rememberMe"
-              class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded cursor-pointer"
+              class="h-3 w-3 bg-transparent border-slate-700 text-[#C5A059] focus:ring-0 focus:ring-offset-0 rounded-none cursor-pointer"
             >
-            <label for="remember_me" class="ml-2 block text-sm text-gray-900 cursor-pointer">
-              Recordarme
+            <label for="remember_me" class="ml-2 block text-[10px] text-slate-400 font-medium uppercase tracking-widest cursor-pointer">
+              Mantener sesión
             </label>
           </div>
-          <div class="text-sm">
-            <a href="#" class="font-medium text-blue-600 hover:text-blue-500">
-              ¿Olvidaste tu contraseña?
+          <div class="text-[10px]">
+            <a href="#" class="font-bold text-slate-500 hover:text-[#C5A059] transition-colors uppercase tracking-widest">
+              Recuperar Clave
             </a>
           </div>
         </div>
 
-        <div>
+        <div class="pt-4">
           <button 
             type="submit" 
             [disabled]="loading"
-            [ngClass]="{'opacity-75 cursor-not-allowed': loading, 'hover:bg-blue-700': !loading}"
-            class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors">
-            
-            <svg *ngIf="loading" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
-              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-            </svg>
+            class="w-full py-4 bg-[#C5A059] text-black text-[10px] font-bold uppercase tracking-[0.4em] hover:bg-[#d4b57a] transition-all duration-500 shadow-2xl disabled:opacity-30 disabled:grayscale active:scale-95">
             
             <span *ngIf="!loading">Ingresar al Sistema</span>
-            <span *ngIf="loading">Procesando...</span>
+            <span *ngIf="loading" class="flex items-center justify-center gap-3">
+              <svg class="animate-spin h-3 w-3 text-black" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+              Autenticando
+            </span>
           </button>
         </div>
 
       </form>
     </div>
+  </div>
+
+  <div class="mt-12 text-center text-slate-600 text-[8px] font-bold uppercase tracking-[0.5em] opacity-60">
+    &copy; 2026 AIR593 Private Concierge • Terminal de Acceso Seguro
   </div>
 </div>
